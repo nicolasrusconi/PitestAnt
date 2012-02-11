@@ -177,10 +177,9 @@ public class PitestTaskTest {
         pitestTask.execute(java);
     }
 
-
     @Test
     public void testClasspathIsSetToJavaTask() throws Exception {
-        String classpath = "bin/;lib/util.jar";
+        String classpath = "bin/"+ File.pathSeparator + "lib/util.jar";
         pitestTask.setClasspath(classpath);
         pitestTask.execute(java);
 
@@ -201,17 +200,16 @@ public class PitestTaskTest {
 
     private static class PathMatcher extends ArgumentMatcher<Path> {
 
-        private static final String PATH_SEPARATOR = ";";
         private final String[] expectedPaths;
 
         public PathMatcher(String path) {
-            this.expectedPaths = path.split(PATH_SEPARATOR);
+            this.expectedPaths = path.split(File.pathSeparator);
         }
 
         @Override
         public boolean matches(Object argument) {
             Path argPath = (Path) argument;
-            String[] paths = argPath.toString().split(PATH_SEPARATOR);
+            String[] paths = argPath.toString().split(File.pathSeparator);
             boolean matches = paths.length == expectedPaths.length;
             if (matches) {
                 for (String expectedPathElement : expectedPaths) {
